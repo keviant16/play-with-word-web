@@ -7,11 +7,6 @@ const Home: React.FC = () => {
     <IonPage >
       <Header />
       <IonContent fullscreen>
-        <IonHeader collapse="condense">
-          <IonToolbar>
-            <IonTitle size="large">home </IonTitle>
-          </IonToolbar>
-        </IonHeader>
         <div style={{ padding: "10px", display: "flex", flexDirection: "column", alignItems: 'center' }}>
           <div style={{ padding: "10px", display: "flex", flexDirection: "column", alignItems: 'center' }}>
             <IonText color="secondary">

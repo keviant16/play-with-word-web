@@ -6,20 +6,22 @@ const Header = () => {
     return (
         <IonHeader>
             <IonToolbar className="toolbar">
-                <IonTitle>
-                    <IonNav>
-                        <IonNavLink component={Home}>
-                            Home
-                        </IonNavLink>
+                <IonNav>
+                    <IonNavLink component={Home}>
+                        Home
+                    </IonNavLink>
 
-                    </IonNav>
+                </IonNav>
+                <IonTitle>
+                    <a href="/home">Home</a>
                 </IonTitle>
                 <IonTitle>
                     <a href="/game">Game</a>
                 </IonTitle>
                 <IonTitle>
-                    <a href="/info">Info</a>
+                    <a href="/statistics">Statistics</a>
                 </IonTitle>
+
             </IonToolbar>
         </IonHeader>
     )

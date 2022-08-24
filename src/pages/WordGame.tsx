@@ -1,5 +1,6 @@
 import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 import Header from '../components/Header';
+import Keyboard from '../components/Keyboard';
 import Matrice from '../components/Matrice';
 import './Home.css';
 
@@ -14,7 +15,7 @@ const WordGame: React.FC = () => {
                     </div>
 
                     <div style={{ padding: "10px", display: "flex", flexDirection: "column", alignItems: 'center' }}>
-                        Keyboard
+                        <Keyboard />
                     </div>
                 </div>
             </IonContent>

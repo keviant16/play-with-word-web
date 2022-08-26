@@ -1,24 +1,20 @@
 
-import { IonCol, IonGrid, IonRow } from '@ionic/react';
-import { MatriceItem } from './MatriceItem';
+import { IonCol, IonGrid, IonItem, IonLabel, IonRow } from '@ionic/react';
 
-const Matrice: React.FC = () => {
-    const matrice = [
-        ["", "", "", "", ""],
-        ["", "", "", "", ""],
-        ["", "", "", "", ""],
-        ["", "", "", "", ""],
-        ["", "", "", "", ""],
-        ["", "", "", "", ""],
-    ]
-
+const Matrice = (props: { matrice: any[]; }) => {
     return (
         <IonGrid>
             {
-                matrice.map((row, i) => (
+                props.matrice.map((row: [], i: number) => (
                     <IonRow key={i}>
-                        {row.map((key, j) => (
-                            <IonCol key={j}><MatriceItem /> </IonCol>
+                        {row.map((key: string, j: number) => (
+                            <IonCol key={j}>
+                                <IonItem>
+                                    <IonLabel>
+                                        {key}
+                                    </IonLabel>
+                                </IonItem>
+                            </IonCol>
                         ))}
                     </IonRow>
                 ))

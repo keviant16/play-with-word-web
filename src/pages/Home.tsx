@@ -5,7 +5,6 @@ import '../style/style.css';
 const Home: React.FC = () => {
   return (
     <IonPage >
-      <Header />
       <IonContent fullscreen>
         <div style={{ padding: "10px", display: "flex", flexDirection: "column", alignItems: 'center' }}>
           <div style={{ padding: "10px", display: "flex", flexDirection: "column", alignItems: 'center' }}>

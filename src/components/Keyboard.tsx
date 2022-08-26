@@ -1,10 +1,5 @@
-import { IonButton, IonButtons, IonToolbar } from "@ionic/react"
-import React from "react"
+import { IonCol, IonGrid, IonItem, IonRow, } from "@ionic/react"
 
-const keyboard = [
-    ["A", "Z", "E", "R", "T", 'Y', "U", "I", "O", "P"],
-    ["Q", "S", "D", "F", "G", "H", "J", "K", "M"],
-    ["back", "W", "X", "C", "V", "B", "N", "enter"]]
 
 
 const Keyboard = (props: any) => {
@@ -33,22 +28,21 @@ const Keyboard = (props: any) => {
     };
 
     return (
-
-        <React.Fragment >
+        <IonGrid>
             {
-                keyboard.map((row, i) => (
-                    <IonToolbar key={i} >
-                        {row.map((key, j) => (
-                            <IonButtons slot="start"
-                                key={j}>
-                                <IonButton fill="outline" onClick={() => handleOnClick(key)}>{key}</IonButton>
-                            </IonButtons>
+                props.keyboard.map((row: [], i: number) => (
+                    <IonRow key={i} >
+                        {row.map((key: { value: string, color: string, disabled: boolean }, j: number) => (
+                            <IonCol key={j}>
+                                <IonItem button color={key.color} onClick={() => handleOnClick(key.value)} disabled={key.disabled}>
+                                    {key.value}
+                                </IonItem>
+                            </IonCol>
                         ))}
-                    </IonToolbar>
+                    </IonRow>
                 ))
             }
-
-        </React.Fragment >
+        </IonGrid>
     )
 }
 export default Keyboard

@@ -1,20 +1,47 @@
-import { IonCol, IonGrid, IonRow } from "@ionic/react"
-import Key from "./Key"
+import { IonCol, IonGrid, IonItem, IonRow, } from "@ionic/react"
 
-const Keyboard = () => {
-    const keyboard = [
-        ["A", "Z", "E", "R", "T", 'Y', "U", "I", "O", "P"],
-        ["Q", "S", "D", "F", "G", "H", "J", "K", "M"],
-        ["back", "W", "X", "C", "V", "B", "N", "enter"]]
+
+
+const Keyboard = (props: any) => {
+
+    const handleOnClick = (value: string) => {
+        if (props.currentCell.row === 6) {
+            value = 'reset';
+        }
+
+        console.log(value);
+
+
+        switch (value) {
+            case 'back':
+                props.remove();
+                break;
+            case 'enter':
+                props.gess();
+                break;
+            case 'reset':
+                props.endGame();
+                break;
+            default:
+                props.add(value);
+        }
+    };
+
     return (
         <IonGrid>
-            {keyboard.map((row, i) => (
-                <IonRow key={i}>
-                    {row.map((key, j) => (
-                        <IonCol key={j}><Key letter={key} /> </IonCol>
-                    ))}
-                </IonRow>
-            ))}
+            {
+                props.keyboard.map((row: [], i: number) => (
+                    <IonRow key={i} >
+                        {row.map((key: { value: string, color: string, disabled: boolean }, j: number) => (
+                            <IonCol key={j}>
+                                <IonItem button color={key.color} onClick={() => handleOnClick(key.value)} disabled={key.disabled}>
+                                    {key.value}
+                                </IonItem>
+                            </IonCol>
+                        ))}
+                    </IonRow>
+                ))
+            }
         </IonGrid>
     )
 }

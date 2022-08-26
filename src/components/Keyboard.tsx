@@ -10,9 +10,24 @@ const keyboard = [
 const Keyboard = (props: any) => {
 
     const handleOnClick = (value: string) => {
-        if (value === 'back' && props.currentCell.col >= 0) props.remove();
+        switch (value) {
+            case 'back':
+                props.remove();
+                break;
+            case 'enter':
+                props.gess();
+                break;
+            case 'reset':
+                props.endGame();
+                break;
+            default:
+                props.add(value);
+        }
 
-        else props.add(value)
+        // if (currentCell.row === 6) {
+        //     //show replay btn
+        //     return endGame();
+        // }
 
     }
     return (

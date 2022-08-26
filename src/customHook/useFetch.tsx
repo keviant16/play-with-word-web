@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 const dataInit = {
     data: [],
-    randomWorld: ""
+    randomWord: ""
 }
 
 const useFetch = (url: RequestInfo | URL) => {
@@ -11,9 +11,9 @@ const useFetch = (url: RequestInfo | URL) => {
     useEffect(() => {
         fetch(url)
             .then((res) => res.json())
-            .then((dataResposne: [] | any) => setData({ data: dataResposne, randomWorld: dataResposne[Math.floor(Math.random() * dataResposne.length)] }))
+            .then((dataResposne: [] | any) => setData({ data: dataResposne, randomWord: dataResposne[Math.floor(Math.random() * dataResposne.length)] }))
     }, [url]);
 
-    return [data];
+    return data;
 }
 export default useFetch;

@@ -10,6 +10,13 @@ const keyboard = [
 const Keyboard = (props: any) => {
 
     const handleOnClick = (value: string) => {
+        if (props.currentCell.row === 6) {
+            value = 'reset';
+        }
+
+        console.log(value);
+
+
         switch (value) {
             case 'back':
                 props.remove();
@@ -23,13 +30,8 @@ const Keyboard = (props: any) => {
             default:
                 props.add(value);
         }
+    };
 
-        // if (currentCell.row === 6) {
-        //     //show replay btn
-        //     return endGame();
-        // }
-
-    }
     return (
 
         <React.Fragment >

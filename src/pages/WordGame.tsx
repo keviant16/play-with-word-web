@@ -20,24 +20,20 @@ const WordGame: React.FC = () => {
     const [matrice, setMatrice] = useState(matriceInit);
     const [currentCell, setCurrentCell] = useState(currentCellInit);
     const data = useFetch("http://localhost:3000/data")
-    console.log(data);
+
+    console.log(data.randomWord);
+
 
     const add = (value: any) => {
         const matriceCopy = [...matrice];
         const currentCellCopy = { ...currentCell };
 
-
-        if (currentCell.row === 6) {
-            return endGame();
-        }
-
         matriceCopy[currentCell.row][currentCell.col].value = value;
 
-        if (currentCell.col === 4) {
-            currentCellCopy.row++;
-            currentCellCopy.col = 0;
-        } else {
+        if (currentCell.col !== 4) {
             currentCellCopy.col++;
+        } else {
+            console.error('should press enter to continue');
         }
 
         setMatrice(matriceCopy);
@@ -62,15 +58,17 @@ const WordGame: React.FC = () => {
         const matriceCopy = [...matrice];
         const currentCellCopy = { ...currentCell };
 
-        if (currentCellCopy.row > 0 && currentCellCopy.col === 0) {
-            currentCellCopy.row--;
-            currentCellCopy.col = 5;
-        }
-        matriceCopy[currentCellCopy.row][currentCellCopy.col - 1] = { value: '', color: "primary" };
-
         if (currentCellCopy.col > 0) {
-            console.log('currentCellCopy', currentCellCopy);
-            currentCellCopy.col--;
+            if (!matriceCopy[currentCellCopy.row][currentCellCopy.col].value) {
+                currentCellCopy.col--;
+            }
+
+            matriceCopy[currentCellCopy.row][currentCellCopy.col] = {
+                value: '',
+                color: 'primary',
+            };
+        } else {
+            console.error('should not remove value');
         }
 
         setMatrice(matriceCopy);
@@ -81,23 +79,31 @@ const WordGame: React.FC = () => {
         const matriceCopy = [...matrice];
         const currentCellCopy = { ...currentCell };
 
-        if (currentCellCopy.row > 0 && currentCellCopy.col === 0) {
-            matriceCopy[currentCellCopy.row - 1].forEach((v, idx) => {
+        const isCurrentValueEmpty =
+            matriceCopy[currentCell.row][currentCell.col].value;
+
+        if (currentCell.col === 4 && isCurrentValueEmpty) {
+            matriceCopy[currentCellCopy.row].forEach((v, idx) => {
                 if (data.randomWord.includes(v.value)) {
-                    //change bg blue
-                    matriceCopy[currentCellCopy.row - 1][idx].color = 'warning';
+                    matriceCopy[currentCellCopy.row][idx].color = 'warning';
 
                     if (v.value === data.randomWord[idx]) {
-                        //change bg red
-                        matriceCopy[currentCellCopy.row - 1][idx].color = 'success';
+                        matriceCopy[currentCellCopy.row][idx].color = 'success';
                     }
                 } else {
-                    matriceCopy[currentCellCopy.row - 1][idx].color = 'danger';
+                    matriceCopy[currentCellCopy.row][idx].color = 'danger';
                 }
             });
-            setMatrice(matriceCopy);
-        }
 
+            currentCellCopy.row++;
+            currentCellCopy.col = 0;
+
+            setCurrentCell(currentCellCopy);
+            setMatrice(matriceCopy);
+
+        } else {
+            console.error('should add value to continue');
+        }
     }
 
     return (

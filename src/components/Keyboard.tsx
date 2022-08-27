@@ -5,12 +5,10 @@ import { IonCol, IonGrid, IonItem, IonRow, } from "@ionic/react"
 const Keyboard = (props: any) => {
 
     const handleOnClick = (value: string) => {
+
         if (props.currentCell.row === 6) {
             value = 'reset';
         }
-
-        console.log(value);
-
 
         switch (value) {
             case 'back':

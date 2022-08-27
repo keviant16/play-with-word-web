@@ -1,9 +1,6 @@
 import { Redirect, Route } from 'react-router-dom';
-import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
+import { IonApp, IonContent, IonFooter, IonHeader, IonIcon, IonItem, IonLabel, IonList, IonMenu, IonMenuToggle, IonRouterOutlet, IonText, IonTitle, IonToolbar, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
-
-
-
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -26,9 +23,12 @@ import './theme/variables.css';
 
 import '../src/style/style.css'
 
-import Home from './pages/Home';
 import Game from './pages/WordGame';
 import Statistic from './pages/Statistic';
+import LastWord from './pages/LastWord';
+import { camera, gameController, save, statsChart } from 'ionicons/icons';
+
+
 
 setupIonicReact();
 
@@ -36,14 +36,44 @@ const App: React.FC = () => {
 
   return (
     <IonApp>
-      <IonReactRouter>
-        <IonRouterOutlet>
-          <Route exact path="/home" component={Home} />
-          <Route exact path="/statistics" component={Statistic} />
-          <Route exact path="/game" component={Game} />
-          <Route exact path="/" render={() => <Redirect to="/home" />} />
-        </IonRouterOutlet>
-      </IonReactRouter>
+      <IonMenu contentId='main' >
+        <IonHeader>
+          <IonToolbar color="primary">
+            <IonTitle>Menu</IonTitle>
+          </IonToolbar>
+        </IonHeader>
+        <IonContent>
+          <IonMenuToggle auto-hide="false">
+            <IonItem button routerLink="/">
+              <IonIcon slot="start" icon={gameController}></IonIcon>
+              <IonLabel>
+                Lancer une nouvelle partie
+              </IonLabel>
+            </IonItem>
+            <IonItem button routerLink="/last-word">
+              <IonIcon slot="start" icon={save}></IonIcon>
+              <IonLabel>
+                Accéder aux derniers mots trouvés
+              </IonLabel>
+            </IonItem>
+            <IonItem button routerLink="/stats">
+              <IonIcon slot="start" icon={statsChart}></IonIcon>
+              <IonLabel>
+                Visualiser des stats
+              </IonLabel>
+            </IonItem>
+          </IonMenuToggle>
+        </IonContent>
+      </IonMenu>
+
+      <IonRouterOutlet id='main'>
+        <IonReactRouter>
+          <Route path="/" component={Game} />
+          <Route path="/last-word" component={LastWord} />
+          <Route path="/stats" component={Statistic} />
+          {/* <Route exact path="/**" render={() => <Redirect to="/" />} /> */}
+        </IonReactRouter>
+      </IonRouterOutlet>
     </IonApp >
   );
 

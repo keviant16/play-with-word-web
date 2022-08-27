@@ -1,5 +1,4 @@
 import { IonContent, IonHeader, IonPage, IonText, IonTitle, IonToolbar } from '@ionic/react';
-import Header from '../components/Header';
 import InfoList from '../components/StatisticList';
 
 import './Home.css';
@@ -7,7 +6,6 @@ import './Home.css';
 const Statistic: React.FC = () => {
     return (
         <IonPage>
-            <Header />
             <IonContent fullscreen>
                 <IonHeader collapse="condense">
                     <IonToolbar>

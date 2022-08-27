@@ -1,5 +1,4 @@
 import { IonButton, IonContent, IonPage, IonText } from '@ionic/react';
-import Header from '../components/Header';
 import '../style/style.css';
 
 const Home: React.FC = () => {
@@ -13,7 +12,7 @@ const Home: React.FC = () => {
             </IonText>
             <p style={{ maxWidth: "40%" }}>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Est voluptate fugiat labore temporibus quisquam repudiandae hic quasi tempore provident blanditiis et dolorum praesentium id, a veritatis, quis magnam ratione enim?</p>
             <div>
-              <IonButton color="primary" href={"/game"}>Jouer</IonButton>
+              <IonButton color="primary" href={"/game"}>Jouer au jeu</IonButton>
             </div>
           </div>
 

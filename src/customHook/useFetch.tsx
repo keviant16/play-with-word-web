@@ -11,7 +11,7 @@ const useFetch = (url: RequestInfo | URL) => {
     useEffect(() => {
         fetch(url)
             .then((res) => res.json())
-            .then((dataResposne: [] | any) => setData({ data: dataResposne, randomWord: dataResposne[Math.floor(Math.random() * dataResposne.length)] }))
+            .then((dataResponse: [] | any) => setData({ data: dataResponse, randomWord: dataResponse[Math.floor(Math.random() * dataResponse.length)] }))
     }, [url]);
 
     return data;

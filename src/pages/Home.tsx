@@ -1,33 +1,32 @@
-import { IonButton, IonContent, IonPage, IonText } from '@ionic/react';
-import Header from '../components/Header';
+import { IonButton, IonButtons, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonMenuToggle, IonPage, IonRow, IonText, IonTitle, IonToolbar } from '@ionic/react';
+import { menu } from 'ionicons/icons';
+import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import StatisticService from '../services/LastWordService';
 import '../style/style.css';
 
 const Home: React.FC = () => {
+
   return (
     <IonPage >
-      <IonContent fullscreen>
-        <div style={{ padding: "10px", display: "flex", flexDirection: "column", alignItems: 'center' }}>
-          <div style={{ padding: "10px", display: "flex", flexDirection: "column", alignItems: 'center' }}>
-            <IonText color="secondary">
-              <h1>Wordle Game</h1>
-            </IonText>
-            <p style={{ maxWidth: "40%" }}>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Est voluptate fugiat labore temporibus quisquam repudiandae hic quasi tempore provident blanditiis et dolorum praesentium id, a veritatis, quis magnam ratione enim?</p>
-            <div>
-              <IonButton color="primary" href={"/game"}>Jouer</IonButton>
-            </div>
-          </div>
-
-          <div style={{ padding: "10px", display: "flex", flexDirection: "column", alignItems: 'center' }}>
-
-            <IonText color="secondary">
-              <h2>Comment Jouer ?</h2>
-            </IonText>
-            <p style={{ maxWidth: "40%" }}>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Est voluptate fugiat labore temporibus quisquam repudiandae hic quasi tempore provident blanditiis et dolorum praesentium id, a veritatis, quis magnam ratione enim?</p>
-            <p style={{ maxWidth: "40%" }}>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Est voluptate fugiat labore temporibus quisquam repudiandae hic quasi tempore provident blanditiis et dolorum praesentium id, a veritatis, quis magnam ratione enim?</p>
-          </div>
-        </div>
-
-      </IonContent>
+      <IonContent color="dark">
+        <IonGrid fixed >
+          <IonRow className="ion-justify-content-center ">
+            <IonCol size="6">
+              <div className="ion-text-center">
+                <h1>Wordle</h1>
+              </div>
+            </IonCol>
+          </IonRow>
+          <IonRow className="ion-justify-content-center" >
+            <IonCol size="6">
+              <div className="ion-text-center">
+                <IonButton routerLink='/game' color={"primary"}>Jouer au jeu</IonButton>
+              </div>
+            </IonCol>
+          </IonRow>
+        </IonGrid>
+      </IonContent >
     </IonPage >
   );
 };

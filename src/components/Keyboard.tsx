@@ -1,16 +1,14 @@
-import { IonCol, IonGrid, IonItem, IonRow, } from "@ionic/react"
+import { IonButton, IonCol, IonGrid, IonItem, IonRow, IonText, } from "@ionic/react"
 
 
 
 const Keyboard = (props: any) => {
 
     const handleOnClick = (value: string) => {
+
         if (props.currentCell.row === 6) {
             value = 'reset';
         }
-
-        console.log(value);
-
 
         switch (value) {
             case 'back':
@@ -28,15 +26,16 @@ const Keyboard = (props: any) => {
     };
 
     return (
-        <IonGrid>
+        <IonGrid fixed>
             {
                 props.keyboard.map((row: [], i: number) => (
-                    <IonRow key={i} >
+                    <IonRow key={i} className="ion-justify-content-center">
                         {row.map((key: { value: string, color: string, disabled: boolean }, j: number) => (
-                            <IonCol key={j}>
-                                <IonItem button color={key.color} onClick={() => handleOnClick(key.value)} disabled={key.disabled}>
+                            <IonCol key={j} size={key.value === "enter" || key.value === "back" ? "2.4" : '1.2'}>
+                                <IonText></IonText>
+                                <IonButton color={key.color} onClick={() => handleOnClick(key.value)} disabled={key.disabled} expand="full">
                                     {key.value}
-                                </IonItem>
+                                </IonButton>
                             </IonCol>
                         ))}
                     </IonRow>

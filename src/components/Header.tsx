@@ -1,31 +1,19 @@
-import { IonHeader, IonNav, IonNavLink, IonTitle, IonToolbar } from "@ionic/react"
-import Home from "../pages/Home";
-import '../style/Header.css'
+import React from 'react';
+import { IonMenu, IonHeader, IonToolbar, IonTitle, IonContent, IonList, IonItem, IonRouterOutlet, IonButton, IonButtons, IonIcon, IonMenuToggle } from '@ionic/react';
+import { menu } from 'ionicons/icons';
 
-const Header = () => {
-    return (
-        <IonHeader>
-            <IonToolbar className="toolbar">
-                <IonNav>
-                    <IonNavLink component={Home}>
-                        Home
-                    </IonNavLink>
+export const Header: React.FC = () => (
 
-                </IonNav>
-                <IonTitle>
-                    <a href="/home">Home</a>
-                </IonTitle>
-                <IonTitle>
-                    <a href="/game">Game</a>
-                </IonTitle>
-                <IonTitle>
-                    <a href="/statistics">Statistics</a>
-                </IonTitle>
-
-            </IonToolbar>
-        </IonHeader>
-    )
-
-}
-
-export default Header;
+    <IonHeader >
+        <IonToolbar color='dark'>
+            <IonButtons slot="start">
+                <IonMenuToggle>
+                    <IonButton>
+                        <IonIcon slot="icon-only" icon={menu}></IonIcon>
+                    </IonButton>
+                </IonMenuToggle>
+            </IonButtons>
+            <IonTitle>Wordle</IonTitle>
+        </IonToolbar>
+    </IonHeader>
+);

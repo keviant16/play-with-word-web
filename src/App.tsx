@@ -28,13 +28,20 @@ import Statistic from './pages/Statistic';
 import LastWord from './pages/LastWord';
 import { gameController, save, statsChart } from 'ionicons/icons';
 import Home from './pages/Home';
+import { useEffect, useState } from 'react';
 
 
 
 setupIonicReact();
 
 const App: React.FC = () => {
+  const [isAuth, setIsAuth] = useState("");
 
+  useEffect(() => {
+    const userID = window.localStorage.getItem("userID")
+    setIsAuth(userID ? userID : "")
+
+  }, []);
   return (
     <IonApp>
       <IonMenu contentId='main' >
@@ -71,9 +78,9 @@ const App: React.FC = () => {
         <IonReactRouter>
           <Route path="/home" component={Home} />
           <Route path="/game" component={Game} />
+          <Redirect exact from="/" to={isAuth ? "/game" : "/home"} />
           <Route path="/last-word" component={LastWord} />
           <Route path="/stats" component={Statistic} />
-          {/* <Route render={() => <Redirect exact from="/" to="/game" />} /> */}
         </IonReactRouter>
       </IonRouterOutlet>
     </IonApp >

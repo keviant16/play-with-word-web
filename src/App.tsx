@@ -43,21 +43,21 @@ const App: React.FC = () => {
             <IonTitle>Menu</IonTitle>
           </IonToolbar>
         </IonHeader>
-        <IonContent>
+        <IonContent color="dark">
           <IonMenuToggle auto-hide="false">
-            <IonItem button routerLink="/game">
+            <IonItem button routerLink="/game" color={"dark"}>
               <IonIcon slot="start" icon={gameController}></IonIcon>
               <IonLabel>
                 Lancer une nouvelle partie
               </IonLabel>
             </IonItem>
-            <IonItem button routerLink="/last-word">
+            <IonItem button routerLink="/last-word" color={"dark"}>
               <IonIcon slot="start" icon={save}></IonIcon>
               <IonLabel>
                 Accéder aux derniers mots
               </IonLabel>
             </IonItem>
-            <IonItem button routerLink="/stats">
+            <IonItem button routerLink="/stats" color={"dark"}>
               <IonIcon slot="start" icon={statsChart}></IonIcon>
               <IonLabel>
                 Visualiser des stats

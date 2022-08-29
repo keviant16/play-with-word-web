@@ -88,7 +88,6 @@ const WordGame: React.FC = () => {
         const matriceCopy = [...matrice];
         const currentCellCopy = { ...currentCell };
 
-
         const isCurrentValueEmpty =
             matriceCopy[currentCell.row][currentCell.col].value;
 
@@ -103,18 +102,18 @@ const WordGame: React.FC = () => {
                     if (randomWord.includes(v.value)) {
 
                         // if (compareStrIteration(v.value, matriceCopy[currentCellCopy.row], randomWord)) {
-                        matriceCopy[currentCellCopy.row][idx].color = 'yellow';
+                        matriceCopy[currentCellCopy.row][idx].color = '#e2850b';
                         updateKeyboard(v.value, "warning",)
                         // }
 
                         //has value same position in randoWord
                         if (v.value === randomWord[idx]) {
-                            matriceCopy[currentCellCopy.row][idx].color = 'green';
+                            matriceCopy[currentCellCopy.row][idx].color = '#11910c';
                             updateKeyboard(v.value, "success")
                         }
 
                     } else {
-                        matriceCopy[currentCellCopy.row][idx].color = "red"
+                        matriceCopy[currentCellCopy.row][idx].color = "#92949c"
                         updateKeyboard(v.value, "danger")
                     }
                 });
@@ -147,7 +146,7 @@ const WordGame: React.FC = () => {
 
 
                         case "warning":
-                            keyboardCopy[i][j].color = color
+                            keyboardCopy[i][j].color = "secondary"
                             break;
 
                         default:

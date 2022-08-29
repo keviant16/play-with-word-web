@@ -1,6 +1,7 @@
 import { IonButton, IonButtons, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonItem, IonLabel, IonList, IonMenuToggle, IonPage, IonRow, IonText, IonTitle, IonToolbar } from "@ionic/react";
 import { menu } from "ionicons/icons";
 import { useEffect, useState } from "react";
+import { Header } from "../components/Header";
 import useFetch from "../hooks/useFetch";
 
 const LastWord: React.FC = () => {
@@ -21,19 +22,8 @@ const LastWord: React.FC = () => {
 
     return (
         <IonPage>
-            <IonHeader>
-                <IonToolbar>
-                    <IonButtons slot="start">
-                        <IonMenuToggle>
-                            <IonButton>
-                                <IonIcon slot="icon-only" icon={menu}></IonIcon>
-                            </IonButton>
-                        </IonMenuToggle>
-                    </IonButtons>
-                    <IonTitle>Le jeu mot</IonTitle>
-                </IonToolbar>
-            </IonHeader>
-            <IonContent className="ion-padding">
+            <Header />
+            <IonContent className="ion-padding" color="dark">
                 <IonGrid>
                     <IonRow className="ion-justify-content-center">
                         <IonCol size="4">

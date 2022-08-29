@@ -26,7 +26,8 @@ import '../src/style/style.css'
 import Game from './pages/WordGame';
 import Statistic from './pages/Statistic';
 import LastWord from './pages/LastWord';
-import { camera, gameController, save, statsChart } from 'ionicons/icons';
+import { gameController, save, statsChart } from 'ionicons/icons';
+import Home from './pages/Home';
 
 
 
@@ -44,7 +45,7 @@ const App: React.FC = () => {
         </IonHeader>
         <IonContent>
           <IonMenuToggle auto-hide="false">
-            <IonItem button routerLink="/">
+            <IonItem button routerLink="/game">
               <IonIcon slot="start" icon={gameController}></IonIcon>
               <IonLabel>
                 Lancer une nouvelle partie
@@ -53,7 +54,7 @@ const App: React.FC = () => {
             <IonItem button routerLink="/last-word">
               <IonIcon slot="start" icon={save}></IonIcon>
               <IonLabel>
-                Accéder aux derniers mots trouvés
+                Accéder aux derniers mots
               </IonLabel>
             </IonItem>
             <IonItem button routerLink="/stats">
@@ -68,10 +69,11 @@ const App: React.FC = () => {
 
       <IonRouterOutlet id='main'>
         <IonReactRouter>
-          <Route path="/" component={Game} />
+          <Route path="/home" component={Home} />
+          <Route path="/game" component={Game} />
           <Route path="/last-word" component={LastWord} />
           <Route path="/stats" component={Statistic} />
-          {/* <Route exact path="/**" render={() => <Redirect to="/" />} /> */}
+          {/* <Route render={() => <Redirect exact from="/" to="/game" />} /> */}
         </IonReactRouter>
       </IonRouterOutlet>
     </IonApp >

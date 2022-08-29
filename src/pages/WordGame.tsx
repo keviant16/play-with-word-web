@@ -4,44 +4,16 @@ import { useState } from 'react';
 import Keyboard from '../components/Keyboard';
 import Matrice from '../components/Matrice';
 import './Home.css';
-import useFetch from '../customHook/useFetch';
+import useFetch from '../hooks/useFetch';
 import { menu } from 'ionicons/icons';
 import WordService from '../services/WordService';
+import { currentCellInit, feedbackInit, keyboardInit, matriceInit, rKeyboardInit, rMatriceInit } from '../utlis/constants';
+import { mapArrayToString } from '../utlis/functions';
+import StatisticService from '../services/LastWordService';
+import { Header } from '../components/Header';
 
 
-const matriceInit = [
-    [{ value: '', color: "#4854e0" }, { value: '', color: "whitesmoke" }, { value: '', color: "whitesmoke" }, { value: '', color: "whitesmoke" }, { value: '', color: "whitesmoke" }],
-    [{ value: '', color: "whitesmoke" }, { value: '', color: "whitesmoke" }, { value: '', color: "whitesmoke" }, { value: '', color: "whitesmoke" }, { value: '', color: "whitesmoke" }],
-    [{ value: '', color: "whitesmoke" }, { value: '', color: "whitesmoke" }, { value: '', color: "whitesmoke" }, { value: '', color: "whitesmoke" }, { value: '', color: "whitesmoke" }],
-    [{ value: '', color: "whitesmoke" }, { value: '', color: "whitesmoke" }, { value: '', color: "whitesmoke" }, { value: '', color: "whitesmoke" }, { value: '', color: "whitesmoke" }],
-    [{ value: '', color: "whitesmoke" }, { value: '', color: "whitesmoke" }, { value: '', color: "whitesmoke" }, { value: '', color: "whitesmoke" }, { value: '', color: "whitesmoke" }],
-    [{ value: '', color: "whitesmoke" }, { value: '', color: "whitesmoke" }, { value: '', color: "whitesmoke" }, { value: '', color: "whitesmoke" }, { value: '', color: "whitesmoke" }],
-];
 
-const rMatriceInit = [
-    [{ value: '', color: "#a9a9ff" }, { value: '', color: "whitesmoke" }, { value: '', color: "whitesmoke" }, { value: '', color: "whitesmoke" }, { value: '', color: "whitesmoke" }],
-    [{ value: '', color: "whitesmoke" }, { value: '', color: "whitesmoke" }, { value: '', color: "whitesmoke" }, { value: '', color: "whitesmoke" }, { value: '', color: "whitesmoke" }],
-    [{ value: '', color: "whitesmoke" }, { value: '', color: "whitesmoke" }, { value: '', color: "whitesmoke" }, { value: '', color: "whitesmoke" }, { value: '', color: "whitesmoke" }],
-    [{ value: '', color: "whitesmoke" }, { value: '', color: "whitesmoke" }, { value: '', color: "whitesmoke" }, { value: '', color: "whitesmoke" }, { value: '', color: "whitesmoke" }],
-    [{ value: '', color: "whitesmoke" }, { value: '', color: "whitesmoke" }, { value: '', color: "whitesmoke" }, { value: '', color: "whitesmoke" }, { value: '', color: "whitesmoke" }],
-    [{ value: '', color: "whitesmoke" }, { value: '', color: "whitesmoke" }, { value: '', color: "whitesmoke" }, { value: '', color: "whitesmoke" }, { value: '', color: "whitesmoke" }],
-];
-
-const keyboardInit = [
-    [{ value: "A", color: "dark", disabled: false }, { value: "Z", color: "dark", disabled: false }, { value: "E", color: "dark", disabled: false }, { value: "R", color: "dark", disabled: false }, { value: "T", color: "dark", disabled: false }, { value: 'Y', color: "dark", disabled: false }, { value: "U", color: "dark", disabled: false }, { value: "I", color: "dark", disabled: false }, { value: "O", color: "dark", disabled: false }, { value: "P", color: "dark", disabled: false }],
-    [{ value: "Q", color: "dark", disabled: false }, { value: "S", color: "dark", disabled: false }, { value: "D", color: "dark", disabled: false }, { value: "F", color: "dark", disabled: false }, { value: "G", color: "dark", disabled: false }, { value: "H", color: "dark", disabled: false }, { value: "J", color: "dark", disabled: false }, { value: "K", color: "dark", disabled: false }, { value: "L", color: "dark", disabled: false }, { value: "M", color: "dark", disabled: false }],
-    [{ value: "back", color: "dark", disabled: false }, { value: "W", color: "dark", disabled: false }, { value: "X", color: "dark", disabled: false }, { value: "C", color: "dark", disabled: false }, { value: "V", color: "dark", disabled: false }, { value: "B", color: "dark", disabled: false }, { value: "N", color: "dark", disabled: false }, { value: "enter", color: "dark", disabled: false }]
-]
-
-const rKeyboardInit = [
-    [{ value: "A", color: "dark", disabled: false }, { value: "Z", color: "dark", disabled: false }, { value: "E", color: "dark", disabled: false }, { value: "R", color: "dark", disabled: false }, { value: "T", color: "dark", disabled: false }, { value: 'Y', color: "dark", disabled: false }, { value: "U", color: "dark", disabled: false }, { value: "I", color: "dark", disabled: false }, { value: "O", color: "dark", disabled: false }, { value: "P", color: "dark", disabled: false }],
-    [{ value: "Q", color: "dark", disabled: false }, { value: "S", color: "dark", disabled: false }, { value: "D", color: "dark", disabled: false }, { value: "F", color: "dark", disabled: false }, { value: "G", color: "dark", disabled: false }, { value: "H", color: "dark", disabled: false }, { value: "J", color: "dark", disabled: false }, { value: "K", color: "dark", disabled: false }, { value: "L", color: "dark", disabled: false }, { value: "M", color: "dark", disabled: false }],
-    [{ value: "back", color: "dark", disabled: false }, { value: "W", color: "dark", disabled: false }, { value: "X", color: "dark", disabled: false }, { value: "C", color: "dark", disabled: false }, { value: "V", color: "dark", disabled: false }, { value: "B", color: "dark", disabled: false }, { value: "N", color: "dark", disabled: false }, { value: "enter", color: "dark", disabled: false }]
-]
-
-const currentCellInit = { row: 0, col: 0 };
-
-const feedbackInit = { message: "", type: "", on: false }
 
 const WordGame: React.FC = () => {
     const [matrice, setMatrice] = useState(matriceInit);
@@ -50,21 +22,28 @@ const WordGame: React.FC = () => {
     const [feedback, setFeedback] = useState(feedbackInit);
     const [nextNewWord, setNextNewWorld] = useState("");
 
-    const data = useFetch("http://localhost:3000/data")
+    const code = window.localStorage.getItem("code")
+    const stats = useFetch("http://localhost:8080/statistics/search/findByCode?code=" + code)
+    const randomWord = useFetch("http://localhost:8080/words/random")
+    const wordList = useFetch("http://localhost:8080/words")
+
 
     const add = (value: any) => {
         const matriceCopy = [...matrice];
         const currentCellCopy = { ...currentCell };
 
+        console.log(randomWord);
+
+
         if (matriceCopy[currentCell.row][currentCell.col].value) {
             handleFeeback("Appuyez sur Entrée pour continuer.", "error")
         } else {
             matriceCopy[currentCell.row][currentCell.col].value = value;
-            matriceCopy[currentCell.row][currentCell.col].color = "#4854e0";
+            matriceCopy[currentCell.row][currentCell.col].color = "#3880ff";
 
-            if (currentCell.col !== 0) {
-                matriceCopy[currentCell.row][currentCell.col - 1].color = "black";
-            }
+            // if (currentCell.col !== 0) {
+            //     matriceCopy[currentCell.row][currentCell.col - 1].color = "black";
+            // }
 
             if (currentCell.col !== 4) {
                 currentCellCopy.col++;
@@ -76,7 +55,7 @@ const WordGame: React.FC = () => {
     };
 
     const endGame = () => {
-        setNextNewWorld(data.data[Math.floor(Math.random() * data.data.length)])
+        // setNextNewWorld()
         setMatrice(rMatriceInit);
         setCurrentCell(currentCellInit);
         setFeedback(feedbackInit)
@@ -108,9 +87,7 @@ const WordGame: React.FC = () => {
     const gess = () => {
         const matriceCopy = [...matrice];
         const currentCellCopy = { ...currentCell };
-        const randomWord = nextNewWord === "" ? data.randomWord : nextNewWord
 
-        console.log({ randomWord });
 
         const isCurrentValueEmpty =
             matriceCopy[currentCell.row][currentCell.col].value;
@@ -119,22 +96,25 @@ const WordGame: React.FC = () => {
         if (currentCell.col === 4 && isCurrentValueEmpty) {
 
             //is current row in data array
-            if (rowIsInArray(matriceCopy[currentCellCopy.row])) {
+            if (rowIsInArray(matriceCopy[currentCellCopy.row], wordList)) {
                 matriceCopy[currentCellCopy.row].forEach((v, idx) => {
 
                     //is value in randoWord
                     if (randomWord.includes(v.value)) {
-                        matriceCopy[currentCellCopy.row][idx].color = '#ffc409';
-                        updateKeyboard(v.value, "warning")
+
+                        // if (compareStrIteration(v.value, matriceCopy[currentCellCopy.row], randomWord)) {
+                        matriceCopy[currentCellCopy.row][idx].color = 'yellow';
+                        updateKeyboard(v.value, "warning",)
+                        // }
 
                         //has value same position in randoWord
                         if (v.value === randomWord[idx]) {
-                            matriceCopy[currentCellCopy.row][idx].color = '#3880ff';
+                            matriceCopy[currentCellCopy.row][idx].color = 'green';
                             updateKeyboard(v.value, "success")
                         }
 
                     } else {
-                        matriceCopy[currentCellCopy.row][idx].color = "#f4f5f8"
+                        matriceCopy[currentCellCopy.row][idx].color = "red"
                         updateKeyboard(v.value, "danger")
                     }
                 });
@@ -190,26 +170,21 @@ const WordGame: React.FC = () => {
         }
     }
 
-    const concatRow = (array: { value: string; color: string; }[]) => {
-        let arrayToStr: string = ""
-
-        array.forEach(el => {
-            arrayToStr += el.value
-        })
-
-        return arrayToStr
-    }
-
     const win = (
         array: { value: string; color: string; }[],
         currentCellCopy: { row: number; col: number; },
         matriceCopy: { value: string; color: string; }[][],
         randomWord: string
     ) => {
-        const arrayToStr: string = concatRow(array)
+        const arrayToStr: string = mapArrayToString(array)
         const currentCellClone = { ...currentCellCopy };
 
         if (randomWord === arrayToStr) {
+
+
+            updateStats()
+
+
             currentCellClone.row = 6
 
             handleFeeback("Vous avez trouver le mot. Appuyez sur une touche du clavier pour Relancez une nouvelle partie", "success")
@@ -234,37 +209,48 @@ const WordGame: React.FC = () => {
         }
     }
 
-    const rowIsInArray = (row: { value: string; color: string; }[]) => {
-        const arrayToStr = concatRow(row)
+    const updateStats = () => {
+        if (currentCell.row === 0) stats["oneTry"] += 1
+        if (currentCell.row === 1) stats["twoTry"] += 1
+        if (currentCell.row === 2) stats["threeTry"] += 1
+        if (currentCell.row === 3) stats["fourTry"] += 1
+        if (currentCell.row === 4) stats["fiveTry"] += 1
+        if (currentCell.row === 5) stats["sixTry"] += 1
+        StatisticService.update(stats)
+    }
 
-        if (data.data.find((el) => el === arrayToStr))
+    const rowIsInArray = (row: { value: string; color: string; }[], wordList: any) => {
+        console.log(wordList?._embedded?.words);
+
+        const arrayToStr = mapArrayToString(row)
+
+        if (wordList?._embedded?.words.find((el: any) => el.value === arrayToStr))
             return true
         return false
     }
 
+
     return (
         <IonPage id="main">
-            <IonHeader>
-                <IonToolbar>
-                    <IonButtons slot="start">
-                        <IonMenuToggle>
-                            <IonButton>
-                                <IonIcon slot="icon-only" icon={menu}></IonIcon>
-                            </IonButton>
-                        </IonMenuToggle>
-                    </IonButtons>
-                    <IonTitle>Header</IonTitle>
-                </IonToolbar>
-            </IonHeader>
-            <IonContent fullscreen >
-                <IonGrid>
+            <Header />
+            <IonContent color="dark">
+                <IonGrid fixed>
                     <IonRow className="ion-justify-content-center">
-                        <IonCol size="4">
-                            <Matrice matrice={matrice} />
+                        <IonCol size="6">
+                            {feedback.on &&
+                                <div style={{ textAlign: "center", padding: 10, borderRadius: 25, backgroundColor: feedback.type === "error" ? "#eb445a" : "green" }}>
+                                    {feedback.message}
+                                </div>
+                            }
                         </IonCol>
                     </IonRow>
                     <IonRow className="ion-justify-content-center">
-                        <IonCol size="8">
+                        <IonCol>
+                            <Matrice matrice={matrice} />
+                        </IonCol>
+                    </IonRow>
+                    <IonRow >
+                        <IonCol>
                             <Keyboard
                                 add={add}
                                 currentCell={currentCell}
@@ -275,15 +261,7 @@ const WordGame: React.FC = () => {
                             />
                         </IonCol>
                     </IonRow>
-                    <IonRow className="ion-justify-content-center">
-                        <IonCol size="4">
-                            {feedback.on &&
-                                <div style={{ textAlign: "center", padding: 10, borderRadius: 25, backgroundColor: feedback.type === "error" ? "#eb445a" : "black" }}>
-                                    {feedback.message}
-                                </div>
-                            }
-                        </IonCol>
-                    </IonRow>
+
                 </IonGrid>
             </IonContent>
         </IonPage >
@@ -291,4 +269,6 @@ const WordGame: React.FC = () => {
 };
 
 export default WordGame;
+
+
 

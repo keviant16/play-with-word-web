@@ -14,11 +14,10 @@ const Matrice = (props: { matrice: any[]; }) => {
     return (
         <IonGrid>
             {props.matrice.map((row: [], i: number) => (
-                <IonRow key={i}>
+                <IonRow key={i} className="ion-justify-content-center">
                     {row.map((key: { value: string, color: string }, j: number) => (
-                        <IonCol key={j} size="2.4">
-                            {/* <div style={{ ...style, backgroundColor: key.color, border: "5px solid " + key.color, color: "white" }}>{key.value}</div> */}
-                            <div style={{ ...style, backgroundColor: "whitesmoke", border: "5px solid " + key.color }}>{key.value}</div>
+                        <IonCol key={j} size="2">
+                            <div className='ion-text-center ' style={{ ...style, border: "2px solid " + key.color, color: "white" }}>{key.value}</div>
                         </IonCol>
                     ))}
                 </IonRow>

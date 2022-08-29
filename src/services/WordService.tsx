@@ -1,15 +1,20 @@
-class WordService {
+import axios from "axios";
 
-    static add(data: string) {
-        fetch('http://localhost:3000/lastWords', {
-            method: "POST",
-            body: JSON.stringify(data),
-            headers: { "Content-type": "application/json; charset=UTF-8" }
-        })
-            .then(response => response.json())
-            .then(json => console.log(json))
-            .catch(err => console.log(err));
+const url = "http://localhost:8080/lastWords"
+
+const config = {
+    headers: {
+        "Access-Control-Allow-Origin": "*",
+        'Content-Type': 'application/json;charset=utf-8'
     }
 }
 
-export default WordService
+class WordService {
+
+    static add(data: string) {
+
+        axios.post(url, { value: data }, config)
+            .then(res => console.log(res))
+    }
+}
+export default WordService;

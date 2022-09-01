@@ -21,17 +21,18 @@ const Home: React.FC = () => {
 
   const history = useHistory()
 
+
   const addUserInfo = () => {
     setLoading(true)
     axios
       .post(baseURL, userInfo)
       .then((response) => {
-
-        const userID = response.data.resourceID
+        const userID = response.data.resourceId
         window.localStorage.setItem("userID", JSON.stringify(userID))
         setLoading(false)
+
+        history.push('/game');
       }).catch((error) => error);
-    history.push('/game');
   }
 
   return (

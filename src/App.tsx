@@ -39,10 +39,14 @@ const App: React.FC = () => {
 
   useEffect(() => {
     const userID = window.localStorage.getItem("userID")
-    setIsAuth(userID ? userID : "")
+    setIsAuth(userID && userID !== 'undefined' ? userID : "")
+    console.log({ userID });
+
 
   }, []);
+
   return (
+
     <IonApp>
       <IonMenu contentId='main' >
         <IonHeader>
@@ -52,13 +56,13 @@ const App: React.FC = () => {
         </IonHeader>
         <IonContent color="dark">
           <IonMenuToggle auto-hide="false">
-            <IonItem button routerLink="/game" color={"dark"}>
+            <IonItem button routerLink="/home" color={"dark"}>
               <IonIcon slot="start" icon={gameController}></IonIcon>
               <IonLabel>
                 Lancer une nouvelle partie
               </IonLabel>
             </IonItem>
-            <IonItem button routerLink="/last-word" color={"dark"}>
+            <IonItem button routerLink="/lastword" color={"dark"}>
               <IonIcon slot="start" icon={save}></IonIcon>
               <IonLabel>
                 Accéder aux derniers mots
@@ -76,11 +80,10 @@ const App: React.FC = () => {
 
       <IonRouterOutlet id='main'>
         <IonReactRouter>
-          <Route path="/home" component={Home} />
-          <Route path="/game" component={Game} />
-          <Redirect exact from="/" to={isAuth ? "/game" : "/home"} />
-          <Route path="/last-word" component={LastWord} />
+          <Route exact path="/home" render={() => isAuth ? <Game /> : <Home />} />
+          <Route path="/lastword" component={LastWord} />
           <Route path="/stats" component={Statistic} />
+          {/* <Route render={() => <Redirect to="/home" />} /> */}
         </IonReactRouter>
       </IonRouterOutlet>
     </IonApp >

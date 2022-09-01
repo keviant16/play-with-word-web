@@ -1,31 +1,26 @@
-import { IonButton, IonButtons, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonMenuToggle, IonPage, IonRow, IonTitle, IonToolbar, } from '@ionic/react';
+import { IonCol, IonContent, IonGrid, IonPage, IonRow } from '@ionic/react';
 
 import { useState } from 'react';
 import Keyboard from '../components/Keyboard';
 import Matrice from '../components/Matrice';
 import './Home.css';
 import useFetch from '../hooks/useFetch';
-import { menu } from 'ionicons/icons';
 import WordService from '../services/WordService';
-import { currentCellInit, feedbackInit, keyboardInit, matriceInit, rKeyboardInit, rMatriceInit } from '../utlis/constants';
-import { mapArrayToString } from '../utlis/functions';
-import StatisticService from '../services/LastWordService';
+import { currentCellInit, data, feedbackInit, keyboardInit, matriceInit, rKeyboardInit, rMatriceInit } from '../utlis/constants';
+import { compareStrIteration, mapArrayToString } from '../utlis/functions';
 import { Header } from '../components/Header';
-
-
-
+import { updateInfoUser } from '../services/InfoUserService';
 
 const WordGame: React.FC = () => {
     const [matrice, setMatrice] = useState(matriceInit);
     const [keyboard, setKeyboard] = useState(keyboardInit);
     const [currentCell, setCurrentCell] = useState(currentCellInit);
     const [feedback, setFeedback] = useState(feedbackInit);
-    const [nextNewWord, setNextNewWorld] = useState("");
 
-    const code = window.localStorage.getItem("code")
-    const stats = useFetch("http://localhost:8080/statistics/search/findByCode?code=" + code)
-    const randomWord = useFetch("http://localhost:8080/words/random")
-    const wordList = useFetch("http://localhost:8080/words")
+    const userID = window.localStorage.getItem("userID")
+    const wordList = data
+    const randomWord: string = useFetch("http://localhost:8080/words/random?id=" + userID)
+    const infoUser = useFetch("http://localhost:8080/infoUsers/" + userID)
 
 
     const add = (value: any) => {
@@ -33,7 +28,6 @@ const WordGame: React.FC = () => {
         const currentCellCopy = { ...currentCell };
 
         console.log(randomWord);
-
 
         if (matriceCopy[currentCell.row][currentCell.col].value) {
             handleFeeback("Appuyez sur Entrée pour continuer.", "error")
@@ -87,24 +81,27 @@ const WordGame: React.FC = () => {
     const gess = () => {
         const matriceCopy = [...matrice];
         const currentCellCopy = { ...currentCell };
-
-        const isCurrentValueEmpty =
-            matriceCopy[currentCell.row][currentCell.col].value;
+        const isCurrentValueEmpty = matriceCopy[currentCell.row][currentCell.col].value;
 
         //is end row and last cell empty
         if (currentCell.col === 4 && isCurrentValueEmpty) {
 
             //is current row in data array
             if (rowIsInArray(matriceCopy[currentCellCopy.row], wordList)) {
+
+                //
                 matriceCopy[currentCellCopy.row].forEach((v, idx) => {
 
                     //is value in randoWord
                     if (randomWord.includes(v.value)) {
 
-                        // if (compareStrIteration(v.value, matriceCopy[currentCellCopy.row], randomWord)) {
                         matriceCopy[currentCellCopy.row][idx].color = '#e2850b';
-                        updateKeyboard(v.value, "warning",)
-                        // }
+                        updateKeyboard(v.value, "warning")
+
+                        //is more than one in randomWord
+                        if (compareStrIteration(v.value, randomWord)) {
+                            matriceCopy[currentCellCopy.row][idx].color = "#ffc409"
+                        }
 
                         //has value same position in randoWord
                         if (v.value === randomWord[idx]) {
@@ -113,6 +110,7 @@ const WordGame: React.FC = () => {
                         }
 
                     } else {
+                        //
                         matriceCopy[currentCellCopy.row][idx].color = "#92949c"
                         updateKeyboard(v.value, "danger")
                     }
@@ -120,6 +118,8 @@ const WordGame: React.FC = () => {
 
                 //is current same as randoWord
                 win(matriceCopy[currentCellCopy.row], currentCellCopy, matriceCopy, randomWord)
+
+
             } else {
                 handleFeeback("Ce mot nest pas dans la liste", "error")
             }
@@ -180,14 +180,37 @@ const WordGame: React.FC = () => {
 
         if (randomWord === arrayToStr) {
 
+            console.log(currentCellClone);
 
-            updateStats()
+            switch (currentCellClone.row) {
+                case 0:
+                    infoUser.attemptOne++
+                    break;
+                case 1:
+                    infoUser.attemptTwo++
+                    break;
+                case 2:
+                    infoUser.attemptThree++
+                    break;
+                case 3:
+                    infoUser.attemptFour++
+                    break;
+                case 4:
+                    infoUser.attemptFive++
+                    break;
+                case 5:
+                    infoUser.attemptSix++
+                    break;
+                default:
+                    break;
+            }
 
+            infoUser.words.push(randomWord)
+            console.log(infoUser);
+            updateInfoUser(infoUser, userID)
 
             currentCellClone.row = 6
-
             handleFeeback("Vous avez trouver le mot. Appuyez sur une touche du clavier pour Relancez une nouvelle partie", "success")
-
 
             WordService.add(randomWord)
             setCurrentCell(currentCellClone)
@@ -208,26 +231,13 @@ const WordGame: React.FC = () => {
         }
     }
 
-    const updateStats = () => {
-        if (currentCell.row === 0) stats["oneTry"] += 1
-        if (currentCell.row === 1) stats["twoTry"] += 1
-        if (currentCell.row === 2) stats["threeTry"] += 1
-        if (currentCell.row === 3) stats["fourTry"] += 1
-        if (currentCell.row === 4) stats["fiveTry"] += 1
-        if (currentCell.row === 5) stats["sixTry"] += 1
-        StatisticService.update(stats)
-    }
-
     const rowIsInArray = (row: { value: string; color: string; }[], wordList: any) => {
-        console.log(wordList?._embedded?.words);
-
         const arrayToStr = mapArrayToString(row)
 
-        if (wordList?._embedded?.words.find((el: any) => el.value === arrayToStr))
+        if (wordList.find((el: string) => el === arrayToStr))
             return true
         return false
     }
-
 
     return (
         <IonPage id="main">

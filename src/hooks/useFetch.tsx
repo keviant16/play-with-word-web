@@ -12,10 +12,15 @@ const useFetch = (url: string) => {
     const [data, setData] = useState<any>(null);
 
     useEffect(() => {
+        let isSubscribed = true;
         axios.get(url, config)
-            .then((res: any) => setData(res.data))
+            .then((res: any) => {
+                if (isSubscribed) {
+                    setData(res.data)
+                }
+            })
+        return (): any => isSubscribed = false;
     }, [url]);
-
     return data;
 }
 export default useFetch;

@@ -10,9 +10,7 @@ const config = {
 }
 
 class WordService {
-
     static add(data: string) {
-
         axios.post(url, { value: data }, config)
             .then(res => console.log(res))
     }

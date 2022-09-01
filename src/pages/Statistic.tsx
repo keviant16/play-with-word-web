@@ -1,31 +1,40 @@
-import { IonButton, IonButtons, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonItem, IonLabel, IonList, IonMenuToggle, IonPage, IonRow, IonText, IonTitle, IonToolbar } from '@ionic/react';
-import { menu } from 'ionicons/icons';
+import { IonCol, IonContent, IonGrid, IonItem, IonLabel, IonList, IonListHeader, IonPage, IonProgressBar, IonRow, IonText } from '@ionic/react';
+import { setUncaughtExceptionCaptureCallback } from 'process';
 import { useEffect, useState } from 'react';
 import { Header } from '../components/Header';
 import useFetch from '../hooks/useFetch';
 
 
-const statInit = {
-    code: "",
-    oneTry: 0,
-    twoTry: 0,
-    threeTry: 0,
-    fourTry: 0,
-    fiveTry: 0,
-    sixTry: 0,
+const userAttemptInit = {
+    attemptOne: 0,
+    attemptTwo: 0,
+    attemptThree: 0,
+    attemptFour: 0,
+    attemptFive: 0,
+    attemptSix: 0,
 }
 
 const Statistic: React.FC = () => {
 
-    const code = window.localStorage.getItem("code")
-    const data = useFetch("http://localhost:8080/statistics/search/findByCode?code=" + code)
-    const [statistic, setstatistic] = useState(statInit);
+    const userID = window.localStorage.getItem("userID")
+    const infoUser: any = useFetch("http://localhost:8080/infoUsers/" + userID)
+    const [attempts, setAttempts] = useState(userAttemptInit);
+    const [total, setTotal] = useState(0)
 
     useEffect(() => {
-        setstatistic(data)
-        console.log(data);
+        const attempts = {
+            attemptOne: infoUser?.attemptOne,
+            attemptTwo: infoUser?.attemptTwo,
+            attemptThree: infoUser?.attemptThree,
+            attemptFour: infoUser?.attemptFour,
+            attemptFive: infoUser?.attemptFive,
+            attemptSix: infoUser?.attemptSix,
+        }
+        const total: number = infoUser?.attemptOne + infoUser?.attemptTwo + infoUser?.attemptThree + infoUser?.attemptFour + infoUser?.attemptFive + infoUser?.attemptSix
+        setTotal(total)
+        setAttempts(attempts)
+    }, [infoUser]);
 
-    }, [data]);
 
     return (
         <IonPage>
@@ -33,36 +42,48 @@ const Statistic: React.FC = () => {
             <IonContent color="dark">
                 <IonGrid>
                     <IonRow className="ion-justify-content-center">
-                        <IonCol size="4">
+                        <IonCol size="6">
                             <IonText color="primary">
                                 <h1>Statisique</h1>
                             </IonText>
                         </IonCol>
                     </IonRow>
                     <IonRow className="ion-justify-content-center">
-                        <IonCol size="4">
-                            {statistic &&
-                                <IonList>
-                                    <IonItem >
-                                        <IonLabel> Trouver un mot en 1 tentative : {statistic.oneTry}</IonLabel>
-                                    </IonItem>
-                                    <IonItem >
-                                        <IonLabel> Trouver un mot en 2 tentative : : {statistic.twoTry}</IonLabel>
-                                    </IonItem>
-                                    <IonItem >
-                                        <IonLabel> Trouver un mot en 3 tentative : : {statistic.threeTry}</IonLabel>
-                                    </IonItem>
-                                    <IonItem >
-                                        <IonLabel> Trouver un mot en 4 tentative : : {statistic.fourTry}</IonLabel>
-                                    </IonItem>
-                                    <IonItem >
-                                        <IonLabel> Trouver un mot en 5 tentative : : {statistic.fiveTry}</IonLabel>
-                                    </IonItem>
-                                    <IonItem >
-                                        <IonLabel> Trouver un mot en 6 tentative : : {statistic.sixTry}</IonLabel>
-                                    </IonItem>
-                                </IonList>
-                            }
+                        <IonCol size="8">
+                            <IonList color="medium">
+                                <IonListHeader>
+                                    <IonLabel>Tentative(s) par mot trouver :</IonLabel>
+                                </IonListHeader>
+                                <IonItem >
+                                    <IonLabel>1 : {attempts.attemptOne} / {total}
+                                        <IonProgressBar value={attempts.attemptOne / total} />
+                                    </IonLabel>
+                                </IonItem>
+                                <IonItem >
+                                    <IonLabel>2 : {attempts.attemptTwo} / {total}
+                                        <IonProgressBar value={attempts.attemptTwo / total} />
+                                    </IonLabel>
+                                </IonItem>
+                                <IonItem >
+                                    <IonLabel>3 : {attempts.attemptThree} / {total} :
+                                        <IonProgressBar value={attempts.attemptThree / total} />
+                                    </IonLabel>
+                                </IonItem>
+                                <IonItem >
+                                    <IonLabel>4 : {attempts.attemptFour} / {total}
+                                        <IonProgressBar value={attempts.attemptFour / total} /></IonLabel>
+                                </IonItem>
+                                <IonItem >
+                                    <IonLabel>5 : {attempts.attemptFive} / {total}
+                                        <IonProgressBar value={attempts.attemptFive / total} />
+                                    </IonLabel>
+                                </IonItem>
+                                <IonItem >
+                                    <IonLabel>6 : {attempts.attemptSix} / {total}
+                                        <IonProgressBar value={attempts.attemptSix / total} />
+                                    </IonLabel>
+                                </IonItem>
+                            </IonList>
                         </IonCol>
                     </IonRow>
                 </IonGrid>

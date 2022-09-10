@@ -1,8 +1,7 @@
 import { IonCol, IonContent, IonGrid, IonItem, IonLabel, IonList, IonListHeader, IonPage, IonProgressBar, IonRow, IonText } from '@ionic/react';
-import { setUncaughtExceptionCaptureCallback } from 'process';
 import { useEffect, useState } from 'react';
 import { Header } from '../components/Header';
-import useFetch from '../hooks/useFetch';
+import { getInfoUser } from '../services/InfoUserService';
 
 
 const userAttemptInit = {
@@ -16,12 +15,18 @@ const userAttemptInit = {
 
 const Statistic: React.FC = () => {
 
-    const userID = window.localStorage.getItem("userID")
-    const infoUser: any = useFetch("http://localhost:8080/infoUsers/" + userID)
+    const userID: any = window.localStorage.getItem("userID")
     const [attempts, setAttempts] = useState(userAttemptInit);
     const [total, setTotal] = useState(0)
 
     useEffect(() => {
+        iniInfoUserAttempt()
+    }, []);
+
+    const iniInfoUserAttempt = async () => {
+        let infoUser = await getInfoUser(userID)
+        const total: number = infoUser?.attemptOne + infoUser?.attemptTwo + infoUser?.attemptThree + infoUser?.attemptFour + infoUser?.attemptFive + infoUser?.attemptSix
+
         const attempts = {
             attemptOne: infoUser?.attemptOne,
             attemptTwo: infoUser?.attemptTwo,
@@ -30,10 +35,10 @@ const Statistic: React.FC = () => {
             attemptFive: infoUser?.attemptFive,
             attemptSix: infoUser?.attemptSix,
         }
-        const total: number = infoUser?.attemptOne + infoUser?.attemptTwo + infoUser?.attemptThree + infoUser?.attemptFour + infoUser?.attemptFive + infoUser?.attemptSix
-        setTotal(total)
+
         setAttempts(attempts)
-    }, [infoUser]);
+        setTotal(total)
+    }
 
 
     return (
@@ -42,44 +47,48 @@ const Statistic: React.FC = () => {
             <IonContent color="dark">
                 <IonGrid>
                     <IonRow className="ion-justify-content-center">
-                        <IonCol size="6">
+                        <IonCol size="10">
                             <IonText color="primary">
                                 <h1>Statisique</h1>
                             </IonText>
                         </IonCol>
                     </IonRow>
                     <IonRow className="ion-justify-content-center">
-                        <IonCol size="8">
-                            <IonList color="medium">
-                                <IonListHeader>
-                                    <IonLabel>Tentative(s) par mot trouver :</IonLabel>
+                        <IonCol size="10">
+                            <IonList color="dark">
+                                <IonListHeader color="dark">
+                                    <IonLabel>
+                                        <div>Nombre total de mot trouver : {total}</div>
+                                        <div>Tentative(s) par mot trouver :</div>
+                                    </IonLabel>
+
                                 </IonListHeader>
-                                <IonItem >
-                                    <IonLabel>1 : {attempts.attemptOne} / {total}
-                                        <IonProgressBar value={attempts.attemptOne / total} />
+                                <IonItem color="dark">
+                                    <IonLabel>1 : {attempts.attemptOne}
+                                        <IonProgressBar color="secondary" value={attempts.attemptOne / total} />
                                     </IonLabel>
                                 </IonItem>
-                                <IonItem >
-                                    <IonLabel>2 : {attempts.attemptTwo} / {total}
-                                        <IonProgressBar value={attempts.attemptTwo / total} />
+                                <IonItem color="dark">
+                                    <IonLabel >2 : {attempts.attemptTwo}
+                                        <IonProgressBar color="secondary" value={attempts.attemptTwo / total} />
                                     </IonLabel>
                                 </IonItem>
-                                <IonItem >
-                                    <IonLabel>3 : {attempts.attemptThree} / {total} :
-                                        <IonProgressBar value={attempts.attemptThree / total} />
+                                <IonItem color="dark">
+                                    <IonLabel >3 : {attempts.attemptThree}  :
+                                        <IonProgressBar color="secondary" value={attempts.attemptThree / total} />
                                     </IonLabel>
                                 </IonItem>
-                                <IonItem >
-                                    <IonLabel>4 : {attempts.attemptFour} / {total}
-                                        <IonProgressBar value={attempts.attemptFour / total} /></IonLabel>
+                                <IonItem color="dark">
+                                    <IonLabel>4 : {attempts.attemptFour}
+                                        <IonProgressBar color="secondary" value={attempts.attemptFour / total} /></IonLabel>
                                 </IonItem>
-                                <IonItem >
-                                    <IonLabel>5 : {attempts.attemptFive} / {total}
-                                        <IonProgressBar value={attempts.attemptFive / total} />
+                                <IonItem color="dark">
+                                    <IonLabel>5 : {attempts.attemptFive}
+                                        <IonProgressBar color="secondary" value={attempts.attemptFive / total} />
                                     </IonLabel>
                                 </IonItem>
-                                <IonItem >
-                                    <IonLabel>6 : {attempts.attemptSix} / {total}
+                                <IonItem color="dark">
+                                    <IonLabel>6 : {attempts.attemptSix}
                                         <IonProgressBar value={attempts.attemptSix / total} />
                                     </IonLabel>
                                 </IonItem>

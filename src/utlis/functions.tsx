@@ -12,8 +12,6 @@ export const compareStrIteration = (value: string, randomStr: string) => {
         count += value === el ? 1 : 0
     }
 
-    console.log(count);
-
     //si count1 < count2 -> true | false
     if (count > 1) {
         return true

@@ -1,24 +1,21 @@
-import { IonButton, IonButtons, IonCol, IonContent, IonGrid, IonHeader, IonIcon, IonItem, IonLabel, IonList, IonMenuToggle, IonPage, IonRow, IonText, IonTitle, IonToolbar } from "@ionic/react";
-import { menu } from "ionicons/icons";
+import { IonCol, IonContent, IonGrid, IonItem, IonLabel, IonList, IonPage, IonRow, IonText, } from "@ionic/react";
 import { useEffect, useState } from "react";
 import { Header } from "../components/Header";
-import useFetch from "../hooks/useFetch";
+import { getInfoUserWords } from "../services/InfoUserService";
 
 const LastWord: React.FC = () => {
 
-    const data = useFetch("http://localhost:8080/lastWords")
+    const userID: any = window.localStorage.getItem("userID")
     const [lastWords, setLastWords] = useState([]);
 
     useEffect(() => {
-        setLastWords(data?._embedded?.lastWords.reverse())
-        console.log(lastWords);
+        initWordList()
+    }, []);
 
-    }, [data]);
-
-
-
-
-    // if (!lastwords) return
+    const initWordList = async () => {
+        let words = await getInfoUserWords(userID)
+        setLastWords(words?.reverse())
+    }
 
     return (
         <IonPage>
@@ -26,18 +23,18 @@ const LastWord: React.FC = () => {
             <IonContent className="ion-padding" color="dark">
                 <IonGrid>
                     <IonRow className="ion-justify-content-center">
-                        <IonCol size="4">
+                        <IonCol size="10">
                             <IonText color="primary">
-                                <h1>Dernier mots trouvés</h1>
+                                <h2>Dernier mots trouvés</h2>
                             </IonText>
                         </IonCol>
                     </IonRow>
                     <IonRow className="ion-justify-content-center">
-                        <IonCol size="4">
+                        <IonCol size="10">
                             <IonList color="dark">
-                                {lastWords && lastWords.map((word: any, idx: number) =>
-                                    <IonItem key={idx}>
-                                        <IonLabel>{idx + 1} : {word.value}</IonLabel>
+                                {lastWords && lastWords.map((word: string, idx: number) =>
+                                    <IonItem key={idx} color="dark">
+                                        <IonLabel color="secondary">{idx + 1} : {word}</IonLabel>
                                     </IonItem>
                                 )}
                             </IonList>

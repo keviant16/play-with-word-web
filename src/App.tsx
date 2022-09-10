@@ -1,5 +1,5 @@
-import { Redirect, Route } from 'react-router-dom';
-import { IonApp, IonContent, IonFooter, IonHeader, IonIcon, IonItem, IonLabel, IonList, IonMenu, IonMenuToggle, IonRouterOutlet, IonText, IonTitle, IonToolbar, setupIonicReact } from '@ionic/react';
+import { Route } from 'react-router-dom';
+import { IonApp, IonContent, IonHeader, IonIcon, IonItem, IonLabel, IonMenu, IonMenuToggle, IonRouterOutlet, IonTitle, IonToolbar, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 
 /* Core CSS required for Ionic components to work properly */
@@ -21,16 +21,12 @@ import '@ionic/react/css/display.css';
 /* Theme variables */
 import './theme/variables.css';
 
-import '../src/style/style.css'
-
 import Game from './pages/WordGame';
 import Statistic from './pages/Statistic';
 import LastWord from './pages/LastWord';
 import { gameController, save, statsChart } from 'ionicons/icons';
 import Home from './pages/Home';
 import { useEffect, useState } from 'react';
-
-
 
 setupIonicReact();
 
@@ -40,23 +36,20 @@ const App: React.FC = () => {
   useEffect(() => {
     const userID = window.localStorage.getItem("userID")
     setIsAuth(userID && userID !== 'undefined' ? userID : "")
-    console.log({ userID });
-
-
   }, []);
 
   return (
-
     <IonApp>
-      <IonMenu contentId='main' >
+      <IonMenu contentId='main'>
         <IonHeader>
           <IonToolbar color="primary">
             <IonTitle>Menu</IonTitle>
           </IonToolbar>
         </IonHeader>
+
         <IonContent color="dark">
           <IonMenuToggle auto-hide="false">
-            <IonItem button routerLink="/home" color={"dark"}>
+            <IonItem button routerLink="/" color={"dark"}>
               <IonIcon slot="start" icon={gameController}></IonIcon>
               <IonLabel>
                 Lancer une nouvelle partie
@@ -80,10 +73,9 @@ const App: React.FC = () => {
 
       <IonRouterOutlet id='main'>
         <IonReactRouter>
-          <Route exact path="/home" render={() => isAuth ? <Game /> : <Home />} />
+          <Route exact path="/" render={() => isAuth ? <Game /> : <Home />} />
           <Route path="/lastword" component={LastWord} />
           <Route path="/stats" component={Statistic} />
-          {/* <Route render={() => <Redirect to="/home" />} /> */}
         </IonReactRouter>
       </IonRouterOutlet>
     </IonApp >

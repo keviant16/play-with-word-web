@@ -1,18 +1,10 @@
-import axios from "axios";
+import { instance } from "./config/Instance";
 
-const url = "http://localhost:8080/lastWords"
-
-const config = {
-    headers: {
-        "Access-Control-Allow-Origin": "*",
-        'Content-Type': 'application/json;charset=utf-8'
+export const getRandomWord = async (userID: number | null) => {
+    try {
+        const response = await instance.get(`/words/random?id=${userID}`)
+        return response.data
+    } catch (error) {
+        console.error(error);
     }
 }
-
-class WordService {
-    static add(data: string) {
-        axios.post(url, { value: data }, config)
-            .then(res => console.log(res))
-    }
-}
-export default WordService;

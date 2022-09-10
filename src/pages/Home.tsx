@@ -1,12 +1,8 @@
 import { IonButton, IonCol, IonContent, IonGrid, IonPage, IonRow } from '@ionic/react';
-import axios from 'axios';
-import { useState } from 'react';
-import { useHistory } from 'react-router-dom';
-import '../style/style.css';
+import { addInfoUser } from '../services/InfoUserService';
+import { InfoUser } from '../types/UserInfo';
 
-const baseURL = "http://localhost:8080/infoUsers"
-
-const userInfo = {
+const infoUser: InfoUser = {
   attemptOne: 0,
   attemptTwo: 0,
   attemptThree: 0,
@@ -14,25 +10,16 @@ const userInfo = {
   attemptFive: 0,
   attemptSix: 0,
   words: []
-}
+};
 
 const Home: React.FC = () => {
-  const [loading, setLoading] = useState(false);
 
-  const history = useHistory()
+  const handleClick = async () => {
+    const response = await addInfoUser(infoUser)
+    const userID = response?.data.resourceId
 
-
-  const addUserInfo = () => {
-    setLoading(true)
-    axios
-      .post(baseURL, userInfo)
-      .then((response) => {
-        const userID = response.data.resourceId
-        window.localStorage.setItem("userID", JSON.stringify(userID))
-        setLoading(false)
-
-        history.push('/game');
-      }).catch((error) => error);
+    window.localStorage.setItem("userID", JSON.stringify(userID))
+    window.location.reload()
   }
 
   return (
@@ -49,12 +36,12 @@ const Home: React.FC = () => {
           <IonRow className="ion-justify-content-center" >
             <IonCol size="6">
               <div className="ion-text-center">
-                <IonButton onClick={addUserInfo} color={"primary"}>Jouer au jeu</IonButton>
+                <IonButton onClick={handleClick} color={"primary"}>Jouer au jeu</IonButton>
               </div>
             </IonCol>
           </IonRow>
         </IonGrid>
-      </IonContent >
+      </IonContent>
     </IonPage >
   );
 };

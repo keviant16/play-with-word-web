@@ -1,29 +1,45 @@
 
-import axios from "axios";
+import { instance } from "./config/Instance";
 
-const url = "http://localhost:8080/infoUsers/"
-const config = {
-    headers: {
-        "Access-Control-Allow-Origin": "*",
-        'Content-Type': 'application/json;charset=utf-8'
-    }
-}
-
-export const getInfoUser = async (infoUser: any, userID: string | null) => {
+export const updateInfoUser = async (infoUser: any, userID: number | null) => {
     try {
-        const response = await axios.put(url + userID, infoUser, config)
-        console.log(response);
+        const response = await instance.put(`/infoUsers/${userID}`, infoUser)
+        return response
     } catch (error) {
         console.error(error);
     }
 }
 
-export const updateInfoUser = async (infoUser: any, userID: string | null) => {
-
+export const getInfoUser = async (userID: number | null) => {
     try {
-        const response = await axios.put(url + userID, infoUser, config)
-        console.log(response);
+        const response = await instance.get(`/infoUsers/${userID}`)
+        return response.data
     } catch (error) {
         console.error(error);
     }
 }
+
+
+
+export const getInfoUserWords = async (userID: number | null) => {
+    try {
+        const response = await instance.get(`/infoUsers/${userID}`)
+        return response.data.words
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+
+export const addInfoUser = async (infoUser: any) => {
+    try {
+        const response = await instance.post(`/infoUsers`, infoUser)
+        return response
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+
+
+

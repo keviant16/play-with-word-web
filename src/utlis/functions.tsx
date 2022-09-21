@@ -1,6 +1,6 @@
 /**
   * Compare iteration of value in a array and a string
-  * Enter : value, saisieStr, randomStr
+  * Enter : value, randomStr
   * Exit : boolean 
   */
 export const compareStrIteration = (value: string, randomStr: string) => {
@@ -34,13 +34,12 @@ export const mapArrayToString = (array: { value: string; color: string; }[]) => 
     return arrayToStr
 }
 
-/**
- * Increment attempt on win by row
- * Enter : rowNumber, 
- * Exit : obj attempt
- */
-export const incrementAttempt = (rowNumber: number, randomStr: string, infoUser: any,) => {
 
-    return infoUser
+
+export const rowIsInArray = (row: { value: string; color: string; }[], wordList: any) => {
+    const arrayToStr = mapArrayToString(row)
+
+    if (wordList.find((el: string) => el === arrayToStr))
+        return true
+    return false
 }
-

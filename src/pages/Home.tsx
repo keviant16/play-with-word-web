@@ -17,7 +17,6 @@ const Home: React.FC = () => {
   const handleClick = async () => {
     const response = await addInfoUser(infoUser)
     const userID = response?.data.resourceId
-
     window.localStorage.setItem("userID", JSON.stringify(userID))
     window.location.reload()
   }

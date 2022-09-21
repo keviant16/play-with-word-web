@@ -20,25 +20,27 @@ const Statistic: React.FC = () => {
     const [total, setTotal] = useState(0)
 
     useEffect(() => {
-        iniInfoUserAttempt()
-    }, []);
+        const iniInfoUserAttempt = async () => {
+            let infoUser = await getInfoUser(userID)
+            const total: number = infoUser?.attemptOne + infoUser?.attemptTwo + infoUser?.attemptThree + infoUser?.attemptFour + infoUser?.attemptFive + infoUser?.attemptSix
 
-    const iniInfoUserAttempt = async () => {
-        let infoUser = await getInfoUser(userID)
-        const total: number = infoUser?.attemptOne + infoUser?.attemptTwo + infoUser?.attemptThree + infoUser?.attemptFour + infoUser?.attemptFive + infoUser?.attemptSix
+            const attempts = {
+                attemptOne: infoUser?.attemptOne,
+                attemptTwo: infoUser?.attemptTwo,
+                attemptThree: infoUser?.attemptThree,
+                attemptFour: infoUser?.attemptFour,
+                attemptFive: infoUser?.attemptFive,
+                attemptSix: infoUser?.attemptSix,
+            }
 
-        const attempts = {
-            attemptOne: infoUser?.attemptOne,
-            attemptTwo: infoUser?.attemptTwo,
-            attemptThree: infoUser?.attemptThree,
-            attemptFour: infoUser?.attemptFour,
-            attemptFive: infoUser?.attemptFive,
-            attemptSix: infoUser?.attemptSix,
+            setAttempts(attempts)
+            setTotal(total)
         }
 
-        setAttempts(attempts)
-        setTotal(total)
-    }
+        iniInfoUserAttempt()
+    }, [userID]);
+
+
 
 
     return (
@@ -74,7 +76,7 @@ const Statistic: React.FC = () => {
                                     </IonLabel>
                                 </IonItem>
                                 <IonItem color="dark">
-                                    <IonLabel >3 : {attempts.attemptThree}  :
+                                    <IonLabel >3 : {attempts.attemptThree}
                                         <IonProgressBar color="secondary" value={attempts.attemptThree / total} />
                                     </IonLabel>
                                 </IonItem>
@@ -89,7 +91,7 @@ const Statistic: React.FC = () => {
                                 </IonItem>
                                 <IonItem color="dark">
                                     <IonLabel>6 : {attempts.attemptSix}
-                                        <IonProgressBar value={attempts.attemptSix / total} />
+                                        <IonProgressBar color="secondary" value={attempts.attemptSix / total} />
                                     </IonLabel>
                                 </IonItem>
                             </IonList>

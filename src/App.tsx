@@ -71,13 +71,13 @@ const App: React.FC = () => {
         </IonContent>
       </IonMenu>
 
-      <IonRouterOutlet id='main'>
-        <IonReactRouter>
+      <IonReactRouter>
+        <IonRouterOutlet id='main'>
           <Route exact path="/" render={() => isAuth ? <Game /> : <Home />} />
           <Route path="/lastword" component={LastWord} />
           <Route path="/stats" component={Statistic} />
-        </IonReactRouter>
-      </IonRouterOutlet>
+        </IonRouterOutlet>
+      </IonReactRouter>
     </IonApp >
   );
 

@@ -1,4 +1,4 @@
-import { IonCol, IonContent, IonGrid, IonItem, IonLabel, IonList, IonPage, IonRow, IonText, } from "@ionic/react";
+import { IonCol, IonContent, IonGrid, IonItem, IonLabel, IonList, IonPage, IonRow, IonText } from "@ionic/react";
 import { useEffect, useState } from "react";
 import { Header } from "../components/Header";
 import { getInfoUserWords } from "../services/InfoUserService";
@@ -9,13 +9,14 @@ const LastWord: React.FC = () => {
     const [lastWords, setLastWords] = useState([]);
 
     useEffect(() => {
+        const initWordList = async () => {
+            let words = await getInfoUserWords(userID)
+            setLastWords(words?.reverse())
+        }
         initWordList()
-    }, []);
+    }, [userID]);
 
-    const initWordList = async () => {
-        let words = await getInfoUserWords(userID)
-        setLastWords(words?.reverse())
-    }
+
 
     return (
         <IonPage>

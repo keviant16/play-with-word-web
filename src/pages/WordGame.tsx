@@ -1,10 +1,10 @@
-import { IonButton, IonCol, IonContent, IonGrid, IonPage, IonRow } from '@ionic/react';
+import { IonCol, IonContent, IonGrid, IonPage, IonRow } from '@ionic/react';
 
 import { useEffect, useState } from 'react';
 import Keyboard from '../components/Keyboard';
 import Matrice from '../components/Matrice';
 import { currentCellInit, data, feedbackInit, keyboardInit, matriceInit } from '../utlis/constants';
-import { compareStrIteration, mapArrayToString } from '../utlis/functions';
+import { compareStrIteration, mapArrayToString, rowIsInArray } from '../utlis/functions';
 import { Header } from '../components/Header';
 import { getInfoUser, updateInfoUser } from '../services/InfoUserService';
 import { getRandomWord } from '../services/WordService';
@@ -22,10 +22,17 @@ const WordGame: React.FC = () => {
     const wordList = data
 
     useEffect(() => {
-        initGame()
-    }, []);
+        const initGame = async () => {
+            let randomWord: string | any = await getRandomWord(userID)
+            let currentInfoUser: InfoUser | any = await getInfoUser(userID)
 
-    const initGame = async () => {
+            setrandomWord(randomWord)
+            setcurrentInfoUser(currentInfoUser)
+        }
+        initGame()
+    }, [userID]);
+
+    const replay = async () => {
         let randomWord: string | any = await getRandomWord(userID)
         let currentInfoUser: InfoUser | any = await getInfoUser(userID)
 
@@ -70,7 +77,7 @@ const WordGame: React.FC = () => {
             [{ value: "back", color: "light", disabled: false }, { value: "W", color: "light", disabled: false }, { value: "X", color: "light", disabled: false }, { value: "C", color: "light", disabled: false }, { value: "V", color: "light", disabled: false }, { value: "B", color: "light", disabled: false }, { value: "N", color: "light", disabled: false }, { value: "enter", color: "light", disabled: false }]
 
         ])
-        return initGame()
+        return replay()
     };
 
     const remove = () => {
@@ -87,7 +94,7 @@ const WordGame: React.FC = () => {
                 color: 'whitesmoke',
             };
         } else {
-            handleFeeback("Veuillez entrer un mot de 5 lettres..", "error")
+            handleFeeback("Veuillez entrez un mot de 5 lettres..", "error")
         }
 
         setMatrice(matriceCopy);
@@ -115,7 +122,7 @@ const WordGame: React.FC = () => {
                         matriceCopy[currentCellCopy.row][idx].color = '#e2850b';
                         updateKeyboard(v.value, "warning")
 
-                        //is more than one in randomWord
+                        //is more than one time in randomWord
                         if (compareStrIteration(v.value, randomWord)) {
                             matriceCopy[currentCellCopy.row][idx].color = "#ffc409"
                         }
@@ -142,7 +149,7 @@ const WordGame: React.FC = () => {
             }
 
         } else {
-            handleFeeback("Veuillez entrer un mot de 5 lettres..", "error")
+            handleFeeback("Veuillez entrez un mot de 5 lettres..", "error")
         }
     }
 
@@ -243,24 +250,12 @@ const WordGame: React.FC = () => {
         }
     }
 
-    const rowIsInArray = (row: { value: string; color: string; }[], wordList: any) => {
-        const arrayToStr = mapArrayToString(row)
-
-        if (wordList.find((el: string) => el === arrayToStr))
-            return true
-        return false
-    }
 
     return (
         <IonPage id="main">
             <Header />
             <IonContent color="dark">
                 <IonGrid fixed>
-                    <IonRow>
-                        <IonCol>
-                            <IonButton onClick={() => window.localStorage.clear()}>Clear Local storage</IonButton>
-                        </IonCol>
-                    </IonRow>
                     <IonRow className="ion-justify-content-center">
                         <IonCol >
                             {feedback.on &&
